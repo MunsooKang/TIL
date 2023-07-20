@@ -1,385 +1,373 @@
-# 함수
-'특정 작업'을 수행하기 위한 '재사용 가능'한 '코드 묶음'
+# 제어문(Control Statement)
+ **조건**에 따라 코드 블록을 실행하거나, **반복**적으로 코드를 실행
 
-## 함수를 사용하는 이유
-코드의 중복을 방지
-재사용성이 높아지고, 코드의 가독성과 유지보수성 향상
+ ## 조건문(Conditional Statement)
+ 주어진 조건식을 평가하여 해당 조건이 참(True)인 경우에만 코드 블록을 실행하거나 건너뜀
 
-1. 내장 함수(Built-in function)
-파이썬이 기본적으로 제공하는 함수(별도의 import없이 바로 사용 가능)
-예 : print(), abs() 절대값 함수
-* 참고 : 구글 - python document - ver 3.9 - 자습서, 라이브러리 레퍼런스 
+ * 파이썬 조건문에 사용되는 키워드 : if / elif / else
 
-2. 함수 호출(function call)
-함수를 실행하기 위해 함수의 이름을 사용하여 해당 함수의 코드 블록을 실행하는 것
-  2-1 함수 구조
-  * input, function body, output(reture) 세 개가 존재해야 함
-  input : parameter(매개변수)
-  function body : (1) Docstring(함수 기능 설명) """ 기능 """로 나타냄
-                  (2) return value
-  
-  2-2 함수의 정의와 호출
-  * 함수 정의 : def 키워드로 시작
-  def 키워드 이후 함수 이름 작성
-  * 함수body : 콜론(:)다음 들여쓰기 된 코드 블록
-  * 함수 반환 값 : return 키워드 이후에 반환할 값 명시
-  return 문은 함수의 실행을 종료하고, 결과를 호출 부분으로 반환
-  반환 값이 없는 경우 함수의 결과는 None
-  ```
-  # 함수 정의
-  def greet(name):
-      """ 입력된 이름 값에 인사를 하는 메세지를 만드는 함수(함수설명)
-      """
-      message = 'hello,' + name # '+'는 결합연산자
-      return message
-
-  # 함수 호출
-    result = greet('Alice')
-    print(result)
-  ```
-
-  3. 매개변수와 인자
-    3-1 매개변수와 인자 구분
-    (1) 매개변수(parameter) : 함수를 **정의**할 때, 함수가 받을 값을 나타내는 변수
-    (2) 인자(argumetn) 함수를 **호출**할 때, 실제로 전달되는 값
-    ```
-    def add_num(x, y): # x, y는 매개변수
-        return x + y
-
-    a, b = 2, 3
-    sum_r = add_num(a, b) # a, b는 인자
-    ```
-    
-    3-2 인자의 종류 
-    (1) 위치 인자
-    함수 호출 시 인자의 위치에 따라 전달되는 인자
-    ※ 위치인자는 함수 호출 시 반드시 값을 전달해야 함
-    ```
-    def greet(name, age): #함수 사용 시 name, age는 필수로 들어가야함
-        print(f'hi, {name}! {age}살이군요')
-    ```
-
-    (2) 기본 인자
-    함수 정의에서 매개변수에 기본 값을 할당하는 것
-    함수 호출 시 인자를 전달하지 않으면 기본값이 매개변수에 할당됨
-    ```
-    def greet(name, age=30):
-        print(f'hi, {name}! {age}살이군요')
-
-    greet('kang') # kang, 30 // age를 넣지 않아도 30 할당
-    greet('kang, 40) # kang, 40 // 필요시 age를 할당해줄 수 있음
-    ```
-
-    (3) 키워드 인자
-    ```
-    def greet(name, age):
-        print(f'hi, {name}! {age}살이군요')
-
-    greet('kang', 25) # hi, kang! 25살이군요
-    greet(age=25, name='kang') # hi, kang! 25살이군요(키워드 인자)
-    greet(age=25, 'kim') # Error 
-    ```
-
-    (4) 임의의 인자 목록
-    정해지지 않은 개수의 인자를 처리하는 인자
-    함수 정의 시 매개변수 앞에 '*'를 붙여 사용하며, 여려 개의 인자를 'tuple'로 처리
-    ```
-    def calculate_sum(*args): #(*args) : 임의의 인자, 개수를 한정하지 않음
-        print(args)
-        total = sum(args)
-        print(f'합계: {total'})
-
-    calculate_sum(1, 2, 3) # 6 
-    calculate_sum(1, 2, 3, 4) # 10
-    ```
-
-    (5) 임의의 키워드 인자 목록
-    함수 정의 시 매개변수 앞에 '**'를 붙여 사용하며, 여러 개의 인자를 'dictionary'로 처리
-    ```
-    def calculate_sum(**keyword)
-        print(keyword)
-
-    calculate_sum(age = 20, food = 'pizza', home = 'gaya') # age = 20, food = 'pizza', home = 'gaya'
-    ```
-
-    (6) 함수 인자 권장 작성 순서
-    * 위치 → 기본 → 가변 → 키워드 → 가변 키워드 (단, 절대규칙은 아니며 상황에 따라 유연하게 조정)
-
-
-# Scope
- 1. python의 범위(Scope)
- 함수는 코드 내부에 local scope를 생성하며, 그 외의 공간인 global scope로 구분
- * scope
- (1) global scope : 코드 어디에서든 참조할 수 있는 공간
- (2) local scope " 함수가 만든 scope (함수 내부에서만 참조 가능)
- * variable
- (1) global variable : global scope에 정의된 변수
- (2) local variable : local scope에 정의된 변수
-
-```
-def my_fun():
-    num = 1 # num is defined in loal scope
-
-print(num) # num is not defined in global scope
-```
-
-2. 변수 수명주기
- * 변수의 수명주기는 변수가 선언되는 위치와 스코프에 따라 결정
- (1) built-in scope : 파이썬이 실행된 이후 영원히 유지
- (2) global scope : 모듈이 호출된 시점 이후 혹은 인터프리터가 끝날 때까지
- (3) local scope : 함수가 호출될 때 생성되고, 함수가 종료될 때까지 유지
-
- 2-1 이름 검색 규칙
- # 다음 순서로 이름을 찾아 나간다(LEGB Rule) (복습)
- Local → Enclosed(로컬 한 단계 위) → Global → Built-in
- ※ 함수 내에서는 바깥 Scope의 변수에 '접근'가능하나, '수정'은 할 수 없음
-```
-print(sum([1, 2, 3])) #6
-
-sum = 10
-print(sum) #10
-
-print(sum([1, 2, 3])) # TypeError: 'int' is not callable
-```
-
-  2-2 global 키워드
-  함수 내에서 전역 변수를 수정하려는 경우에 사용
-  ```
-  num = 0 # 전역 변수
-
-  def increment():
-      global num # num을 전역 변수로 선언
-      num += 1
-
-  print(num) # 0
-  increment()
-  print(num) # 1
-  ```
-  * global 키워드 주의사항 : 매개변수에 global 사용 불가
-
-
-### 재귀함수
-함수 내부에서 자기 자신을 호출하는 함수
-
- 1. 재귀 함수 특징
- 특정 알고리즘 식을 표현할 떄 변수의 사용이 줄어들며, 코드의 가독성이 높아짐
- 1개 이상의 base case(종료되는 상황)가 존재하고, 수렴하도록 작성
- * 예시 : 팩토리얼 n!
+ 1. 'if' statement
  ```
- def fac(n):
-    if n == 0: # 종료 조건 n이 0이면 1을 반환
-        return 1
-    return n * fac(n-1) # 재귀 호출
+ if 표현식:
+    코드 블록
+elif 표현식:
+    코드 블록
+else:
+    코드 블록
  ```
- * 재귀함수는 (1) 종료조건을 명확히, (2)반복되는 호출이 종료 조건을 향하도록 작성해야한다.
+ 조건문에서 elif와 else는 선택사항
 
-### 유용한 함수
-1. map
- map(funtion, interable) ※iterable : 반복가능한 객체
-데이터구조(itrable)의 모든 요소에 함수를 적용하고, 그 결과를 map object로 반환
-   * map object는 확인이 어려움(oxooo....) → list(대체로)로 변환하여 확인 list(map(fun, iterable))
+  1.1 복수 조건문
+  * 조건식을 동시에 검사하는 것이 아니라 순차적으로 비교
+  ```
+  dust = 35
+  if dust > 150:
+      print('매우 나쁨) # 확인 1 X
+  elif dust > 80:
+      print('나쁨') # 확인 2 X
+  elif dust > 30:
+      print('보통') #확인 3 O
+  else:
+      print('좋음') # 실행 X
+  ```
 
-2. zip(*iterables)
-임의의 iterable을 모아 튜플을 원소로 하는 zip object를 반환
+  1.2 중첩 조건문
+  가능
+
+* 그 외
+if 1: = 동작한다(내장된 bool 함수에 의해 1 = True로 인식)
+if 0: = 동작하지 않는다(내장된 bool 함수에 의해 0 = false로 인식)
+
+## 반복문(Loop Statement)
+주어진 코드 블록을 여러 번 반복해서 실행하는 구문
+* (1) 특정 작업을 반복적으로 수행(종료 조건이 없다)
+* (2) 주어진 조건인 참인 동안 반복(특정한 종료조건(false)이 있다.)
+
+1. For
+**임의의 시퀀스+@**의 항목들을 그 시퀀스에 들어있는 순서대로 반복
+
+1.1 for 변수 in 반복 가능한 객체:
+    코드 블록
+
+* 반복 가능한 객체(iterable) : 시퀀스, dict, set 포함
+
+  1.2 문자열 순회
 ```
-girls = ['jane', 'ashley']
-boys = ['peter, 'jay']
-pair = zip(girls, boys)
+country = 'korea'
 
-print(list(pair)) #[('jane', 'peter'), ('ashley', 'jay')]
+for char in country:
+    print(char) # k / o / r / e / a 문자열도 반복문 가능
 ```
-* 쌍이 안맞는 경우는 어떻게 할까? → 해보세용...
-```
-# 두 개의 리스트를 딕셔너리로 변환하기
-keys = ['a', 'b', 'c']
-valuses = [1, 2, 3]
-my_dict = zip
-```
+  1.3 인덱스로 리스트 순회
+  * 리스트의 요소가 아닌 **인덱스**로 접근하여 해당 요소들을 변경하기
+  ```
+  numbers = [1, 2, 3, 4]
+  for i in rage(len(numbers)):
+      numbers[i] = numbers[i] * 2
+  print(numbers) # 2 / 4 / 6 / 8
+  ```
 
-3. lambda
-lambda 매개변수: 표현식
-간단한 연산이나 함수를 한 줄로 표현할 때 사용
-```
-def add(x, y):
-    return x + y # fun1
+  1.4 중첩된 반복문
+  ```
+  outers = ['a', 'b']
+  inners = ['c', 'd']
 
-add = lambda x,y: x + y # fun2, fun1 == fun2
-```
+  for outer in outers:
+      for inner in inners:
+          print(outer, inner)
 
-4. map + lambda
-```
-numbers = [1, 2, 3, 4]
-result = map(lambda x: x *2, numbers)
-print(result) # [2, 4, 6, 8]
-```
+  # (a,d) / (a,d) / (b,c) / (b,d)
+  # 동작 원리(순서) 확인하기
+  # print가 호출되는 횟수 : len(outers) * len(inners) = 4
+  ```
 
-### Packing & Unpacking < 오후수업 >
-1. packing
-여러 개의 값을 하나의 변수에 묶어서 담는 것
-변수에 담긴 값들은 tuple 형태로 묶임
-* 예시 
-```
-packed_valuse = 1, 2, 3 ,4 ,5
-numbers = [1, 2, 3, 4, 5]
-
-# *을 활용하면 남은 요소들을 리스트로 패킹하여 할당
-a, *b, c = numbers
-print(a) # 1
-print(b) # [2, 3, 4]
-print(c) # 5
-```
-
-2. unpacking
-메모리적으론 비효율적이나, 가끔 알고리즘 문제 풀 때 써야 함
-* 예시
-```
-lst = [1, 2, 3]
-a, b ,c = lst
-
-print(a) #1
-print(b) #2
-print(c) #3
-###########
-
-results= [1, 2, 3] # (1,2,3)을 출력하고 싶음
-
-for result in results:
-    print(result, end = " ") # (1,2,3)
-
-print(*results) # (1,2,3) // 위 코드와 같은 동작
-############
-
-edf test(a,b,c):
-    print(a,b,c)
-
-dic = {'a' : 1, 'b' : 2, 'c' : 3}
-test(**dic)
-```
-* *, ** : 패킹, 언패킹 활용
-
-
-### Module
-한 파일로 묶인 변수와 함수 모음, 함수가 작성된 파이썬 파일(.py)
- 
-  1. 모듈 가져오기
-    (1) 가져오는 법 : import '' ex) import math
-    (2) 모듈에 든 내용 확인하기 : help('') ex) help(math)
-    (3) 가져오는 법2 : from '' import ''(일부), *(다)
-    (4) 서로 다른 모듈이 같은 이름의 함수를 제공할 경우 덮어 씌워짐(마지막에 import된 이름으로 대체)
-
-  * cf 기술질문 ~~할 경우 좋은 이유 : 재사용성, 가독성이 좋다.
-  ~~ 할 경우 안 좋은 이유 : 메모리적으로 비효율적이다.
-
-  2. 모듈 만들기
-
-  3. 재사용하기 위한 코드조각 : 함수 > 모듈 > 패키지
-
-### 파이썬 표준 라이브러리
-
-  1. 패키지 구분
-  (1) 내부 패키지
-  (2) 외부 패키지
-* pip : 외부 패키지들을 설치하도록 도와주는 파이썬의 패키지 관리 시스템
-
-  2. 패키지 사용 목적
-  모듈들의 이름공간을 구분하여 충돌을 방지
-  모듈을 효율적으로 관리하고 재사용할 수 있도록 돕는 역할
-
-
-
-
-___
-___
-___
-
-# 오후 수업 
-# Functions
-focus '재사용', '코드'
-
-## 함수 호출 
-def test(매개변수):
-    return(매개변수) # 함수 정의문(문 : 실행시킬 수 있는 최소 단위)
-
-test(전달 인자) # 함수 호출문
-
-result = test()
-순서도 전달인자 입력(0) → 매개변수에 전달인자 입력 → 함수값 → test() → test() 주소값 → result에 할당
-
-함수 정의 : def ~~ //
-함수 호출 : result = fun()
-함수 반환값 = return, output
-
-* 임의의 인자 목록(안전함, 예상가능)
-사용을 지양하는 이유
-(1) 가독성
-(2) 메모리 : 몇 개나 들어올지 모르기에 여유있게 메모리를 할당
-
-* 임의의 키워드 인자 목록(빠름)
-<-> 임의의 인자 목록 : 결과값 활용처에 따라 다르게 사용
-
-* Scope
- 1. global
- 2. local
- local 사용을 권장 : why? 어디서 바뀔지 모름, 메모리 많이 사용
- Scope는 최대한 짧게 사용
-
- ## LEGB 이름 검색 규칙 << 시험 >>
+  1.5 중첩 리스트 순회
+  안쪽 리스트 요소에 접근하려면 바깥 리스트를 순회하면서 중첩 반복을 사용해 각 안쪽 반복을 순회
+  ```
+  elements = [['A', 'B'], ['C', 'D']]
   
- ## 재귀함수 <<시험>>
- 5!, -> f(0)까지 호출
- 각각 함수가 몇 번 호출되는지 알아야한다.
- ex) 7! -> f(4)는 몇번 호출됐는가?
+  for elem in elements:
+      for item in elem:
+          print(item) # A / B / C / D 
+  
+  # IM시험 : 이차원리스트를 얼마나 잘 활용하냐
+  ```
 
- ## map
- 함수의 전달인달에 함수를 넣을 수 있다. -> 파이썬만 됨
- map(함수, 시퀀스 자료)
+2. While
+주어진 조건식이 참(Ture)인 동안 코드를 반복해서 실행
+== 조건이 거짓(Flase)가 될 때 까지 반복
 
-# lambda
-def test(n):
-    pass
+while 조건식:
+    코드 블록
 
-a = test
-a(n) # 동작한다.
+  2.1 사용자 입력에 따른 반복
+  * while문을 사용한 특정 입력 값에 대한 종료 조건 활용하기
+  ```
+  number = int(input('양의 정수를 입력해주세요.:'))
 
-왜 만들었나? 참조가 안된 메모리는 시간이 지나면 삭제되는 것을 활용 → 1회용, 알아서 지워지도록
+  while number <= 0:
+      if number <0:
+          print('음수를 입력했습니다.')
+      else:
+      print('0은 양의 정수가 아닙니다.)
+      number = int(input('양의 정수를 입력해주세요.:'))
+
+  print('잘했습니다!')
+  ```
+* while문은 반드시 종료조건이 필요!!
+
+### 적절한 반복문 활용하기
+  1. for
+  * 반복 횟수가 명확하게 정해져 있는 경우
+  * (예) list, tuple, str 등과 같은 시퀀스 형식의 데이터를 처리할 때
+
+  2. while
+  * 반복 횟수가 불명확하거나 조건에 따라 반복을 종료해야 할 때
+  * (예) 사용자의 입력을 받아서 특정 조건이 충족될 때가지 반복
+
+
+  ## 반복 제어
+  for아 while은 본문 내 모든 코드를 실행하나, **때때로 일부만 실행하는 것이 필요할 때가 있음**
+
+  1. break
+  반복을 즉시 중지
+  ```
+  numbers = [1, 2, 3, 5, 6]
+  found_even = False
+
+  for num in numbers:
+      if num % 2==0:
+          print('첫 번째 짝수를 찾았습니다:', num)
+          found_even = Ture
+          break
+
+  if not found_even:
+      print('짝수를 찾지 못했습니다.')
+  ```
+
+
+  2. continue
+  다음 반복으로 건너뜀
+  ```
+  numbers - [1, 2, 3, 4, 5, 6]
+
+  for num in numbers:
+      f num % 2 ==0:
+          continue 
+      print(num)
+
+  # continue는 다음 '반복(for문(o))' 으로 넘어간다 / 다음 코드(print(x))로 넘어가지 않는다.
+  ```
+
+  3. break와 continue 주의사항
+  * break와 continue의 남용은 코드의 가독성을 저하시킨다
+  * 특정한 종료조건을 만들어서 break를 대신하거나, if문을 사용해 continue처럼 코드를 건너 뛸 수 있음
+
+
+### List Comprehension
+간결하고 효율적인 리스트 생성 방법
+
+1. List Comprehension 구조
+[expression for 변수 in iterable]
+
+list(expression for 변수 in iterable)
+* 가독성 안좋음
+```
+# 홀수만 들어있는 리스트 만들기
+
+# 1. 일반적인 형태
+new_list = []
+for i in range(10):
+    if i % 2 == 1:
+        new_list.append(i)
+    else:
+        new_list.apped(str(i))
+print(new_list)
+
+# 2. List Comprehension 사용
+new_list_2 = [i for i in range(10)]
+print(new_list_2)
+
+new_list_2 = [i for i in range(10) if i  % 2 == 1]
+print(new_list_2)
+
+new_list_3 = [ i if i% 2 == 1 else str(i) for i in range(10)]
+
+# 중첩된 if는 가능하다. 단, elif는 사용 불가능하다.
+```
+### 리스트를 생성하는 3가지 방법 비교
+* 어떤게 제일 빨라용? : 성능은 일반화가 불가능 ㅎㅎ(외부요인, 상황 등) 그래도 대부분의 상황에서는 compre가 빠르다. 단, 극단적인 차이는 존재하지 않는다.
+```
+# 정수 1,2,3을 가지는 새로운 리스트 만들기
+numbers = ['1', '2', '3']
+
+# 1. for loop
+new_numbers = []
+for number in numbers:
+    new_numbers.append(int(number))
+print(new_numbers) #[1, 2, 3]
+
+# 2. map
+new_numbers_2 = list(map(int, numbers))
+print(new_numbers_2) #[1, 2, 3]
+
+# 3. list comprehensive
+new_numbers_3 = [int(number) for number in numbers]
+print(new_numbers_3) #[1, 2, 3]
+```
+
+### 기타
+1. Pass
+* 아무런 동작도 수행하지 않고 넘어가는 역할, 문법적으론 문장이 필요하나 프로그램 실행헤는 영향을 주지 않아야 할 때 사용
+* 사용 예 : (1) 미완성 코드, (2) 조건문에서 아무 동작 수행하지 않아야할 때 (3) 무한 루프에서 조건이 충족되지 않을 때 pass를 통해 계속 진행
+
+2. enumerate
+```
+fruits = ['apple', 'banana', 'cherry']
+
+for index, fruit in enumerate(fruits):
+    print(f'인덱스 {index} : {fruit}')
+```
+```
+result = ['a', 'b', 'c']
+
+print(list(enumerate(result))) #[(0, 'a'), (1, 'b'), (2, 'c')]
+
+# tuple 형태로 나옴 : (a의 인덱스, 'a'), (b의 인덱스, 'b') ...
+```
 
 ---
-***
 ___
-<br/>
+***
+<br\>
 
-# Array(배열)와 List(연결리스트)
+# 오후 수업
 
-CRUD : Create, Read, Update, Delete
-(1) Read : array 압승
-(2) Create :
-  (2-1) 맨 앞에 생성될 때(1234 -> 01234) : list 압승
-  (2-2) 중간에 생성될 때 (1245 -> 12345) : list 압승
-  (2-3) 맨 뒤에 생성될 때(1234 -> 12345) : 비슷함
-(3) Delete : create와 동일
+* 코드 잘 짰나? : (1)무한대로 늘려보기 (2) 뒤집어서 생각해보기
+for i in 1, 2, 3:
+    print(i) # 1, 2, 3 // 작동되는 이유 : python 자체적으로 1,2, 3을 tuple로 변환
 
+iterable -> num_lists = [1,2] 단수, 복수 표현하기
+for num_list in num_lists: # 이런 식으로 활용 가능
 
-## List
-* 순서가 있다고 해서 array와 같지는 않다.
+# while 끝나야 하는 조건이 반드시 있어야함 **시험** 단답식
+# 재귀함수 : 반드시 끝나는 조건이 있어야함 **시험** 단답식
 
+# Continue **시험 ** 어떻게 사용하나?
+목요일 48page 기억하기 2문제
+countinue -> 아래로 내려가지 않고 바로 다음 원소(위로)감
+# 짝수로직(or 홀수로직) if num % 2 == 0:
 
-# tuple >> 시험 2문제 정도
-'변경 불가능', '0개 이상의 객체'
-* 1개 있을 때 형태가 다름 (1,) 쉼표 필수 why? 단순한 정수로 인식되지 않기 위해
+List comprehension '파이썬에만 존재'
+ = comprehension 이해
+리스트말고도 가능하다.
+```
+num_lists = [2, 4, 6]
+add1 = [num_list ** 2 for num_list in num_lists]
+add2 = list(num_list ** 2 for num_list in num_lists)
+print(add1)
+print(add2)
 
-str, tuple, range 변경불가
+set1 = { i + i for i in range(5)}
+print(set1)
+
+tuple1 = tuple(i + 1 for i in range(5))
+print(tuple1)
+
+# enumerate
+ist = [ '가', 3, '4']
+for x, y in enumerate(ist):
+    print(y,x) # x = index, y = list
 
 ```
-def test():
-    pass
-a = ('나', 1, test)
-a[2] = 1   # Error, why? a의 형태가 tuple이라 변경이 불가능
-```
-## dict
-1. 접근법 
-* my_dict['apple'] or my_dict.get('apple')
 
-## set
-집합 연산 합(|), 차(-), 교(&)
-b = {1 , 2, 3, 3, 4}
-print(b) # {1, 2, 3, 4} 정렬이 되는거 같아 보여도 실제론 아니다.
+## 2일차(화) 진도
+1. Other Type
+* None : 값이 없음
+* Bollean : True / False 두 가지 경우만 있음
+변수명 'is'_로 시작한다 →  True, False 값을 지닌 변수
+
+2. Type Conversion
+법(안전) <-> 자유
+파이썬 = 동적언어 = 자유로운 언어
+대기업에서 파이썬을 안쓰는 EU : 자유로운 만큼 안전하지 않음
+
+(1) 암시적 형변환 : 파이썬, 자바스크립트만 있음.
+* 3 + 5.0 → 8.0 # int + float → float
+* Ture + 3 → 4 # bool + int → int
+* Ture + False → 1 # bool + bool → int
+
+(2) 명시적 형변환 : 모든 프로그램에 다 있음
+* str → integer : 형식에 맞는 숫자만 가능
+* integer → str : 전부 다 가능
+93page 참조
+
+3. 연산자
+ 3-1
+ * 산술연산자 : //(몫), &(나머지), **(거듭제곱)
+* 우선순위 꼭 기억 << -(음수 보다 **(거듭제곱)이 우선함)>>
+ 3-2
+* 복합연산자
+ 3-3
+* 비교연산자 
+# <시험> is와 == 비교 // is not과 != 비교 104p 단답식
+== 는 값을 비교, is 는 레퍼런스(주소)를 비교
+2.0 == 2 # True   Hi == hi # False
+2.0 is 2 # False  Hi == hi # False
+
+ 3-4
+* 논리연산자(and, or, not)
+ (1) A and B
+A    | B    | A and B
+---------------------
+F(0) | F(0) | F(0)
+F(0) | T(1) | F(0)
+T(1) | F(0) | F(0)
+T(1) | T(1) | T(1)
+ (2) A or B
+ (3) A not B
+
+4. 단축 평가 (**시험**)
+  4-1 and
+```
+print(3 and 5) # 5
+print(False and 5) # False
+print(5 and False) # False
+print(5 and 3) # 3
+print(3 and 0) # 0 
+print(0 and 3) # 0
+```
+* (1) 앞이 0(False)인 경우 뒤에는 계산도 안하고 False다.
+* (2) 앞이 1(Ture)인 경우 뒤의 값(0 or 1)을 평가해서 출력한다.
+
+  4-2 or
+```
+print(5 or 3) # 5
+print(3 or 5) # 3
+print(True or 0) # True
+ptint(0 or 3) # 3
+print(0 or 0) # 0
+```
+* (1) 앞이 True(1)이면 뒤는 보지 않아도 True(1)이다.
+* (2) 앞이 False(0)이면 뒤의 값을 평가해서 출력한다.
+
+False, True
+
+5. 맴버십 연산자
+ (1) in : 왼쪽 피연산자가 오른쪽 피연산자의 시퀀스에 속하는지 확인
+ (2) not in : 왼쪽이 오른쪽에 속하지 않는지 확인
+
+ 6. 시퀀스형 연산자
+ + : 시퀀스 연결
+ * : * 우측의 횟수만큼 반복
+ (예) print('[1,2]' + [3,4]) # [1,2,3,4]
+      print([1,2] * 2) # [1,2,1,2]
+
+ 7. 연산자 우선순위 
+
+
+
+
+
+
+
