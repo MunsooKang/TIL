@@ -1,0 +1,26 @@
+1. npm install tailwindcss postcss-cli autoprefixer
+2. npx tailwindcss init -p
+3. ``` // tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+
+module.exports = {
+    content: ["./src/**/*.{js,jsx,ts,tsx}"],
+    theme: {
+        extend: {},
+    },
+    plugins: [],
+};
+```
+4. create src => tailwind.css
+```
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+5. // App.jsx
+import "./tailwind.css"
+
+
+
+https://velog.io/@hokim/React-2-React-Tailwind-%EC%84%B8%ED%8C%85
