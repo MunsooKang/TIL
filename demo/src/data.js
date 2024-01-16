@@ -42,3 +42,5 @@ export const Poster = [
   { image: bp, alt: 'Alt Text 3' },
   { image: exo, alt: 'Alt Text 3' },
 ]
+
+export const Image = aspa
